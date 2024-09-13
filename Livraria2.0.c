@@ -13,6 +13,15 @@ struct Livro //cria uma struct para armazenar informações de livros
     float preco;
 };
 
+struct Funcionario //cria uma struct para armazenar informações dos funcionários
+{
+    int id;
+    char nome[100];
+    char cargo[50];
+    float salario;
+    int idade;
+};
+
 int carregar_livros_txt(struct Livro livros[]) 
 {
     FILE *arquivo = fopen("livros.txt", "r");
@@ -21,23 +30,23 @@ int carregar_livros_txt(struct Livro livros[])
             printf("Erro ao abrir o arquivo para leitura.\n");
             return 0;
         }
-    int quantidadeTotal = 0;
+    int QuantidadeLivros = 0;
 
     while (fscanf(arquivo, "%99[^;];%99[^;];%49[^;];%19[^;];%d;%f\n",
-            livros[quantidadeTotal].titulo, livros[quantidadeTotal].autor, livros[quantidadeTotal].genero,
-            livros[quantidadeTotal].isbn, &livros[quantidadeTotal].quantidade, &livros[quantidadeTotal].preco) != EOF) 
+            livros[QuantidadeLivros].titulo, livros[QuantidadeLivros].autor, livros[QuantidadeLivros].genero,
+            livros[QuantidadeLivros].isbn, &livros[QuantidadeLivros].quantidade, &livros[QuantidadeLivros].preco) != EOF) 
         {
-            quantidadeTotal++;
+            QuantidadeLivros++;
         }
     fclose(arquivo);
-    return quantidadeTotal;
+    return QuantidadeLivros;
 }
 
-void pesquisarLivro(struct Livro livros[], int quantidadeTotal, char parametro[], char tipoBusca[]) //função de pesquisa de livro no sistema
+void pesquisarLivro(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) //função de pesquisa de livro no sistema
 {
     int encontrado = 0; //já é atribuído o valor de 0 como se o livro não existisse no sistema
 
-    for (int i = 0; i < quantidadeTotal; i++) //a repetição passa de livro por livro cadastrado
+    for (int i = 0; i < QuantidadeLivros; i++) //a repetição passa de livro por livro cadastrado
     {
         if ((strcmp(tipoBusca, "titulo") == 0 && strcasecmp(livros[i].titulo, parametro) == 0) ||
             (strcmp(tipoBusca, "autor") == 0 && strcasecmp(livros[i].autor, parametro) == 0) ||
@@ -64,12 +73,12 @@ void pesquisarLivro(struct Livro livros[], int quantidadeTotal, char parametro[]
     }
 }
 
-void removerLivro(struct Livro livros[], int *quantidadeTotal, char parametro[], char tipoBusca[]) // Função de remover livro no sistema
+void removerLivro(struct Livro livros[], int *QuantidadeLivros, char parametro[], char tipoBusca[]) // Função de remover livro no sistema
 {
     int encontrado = 0;
 
     // Procura o livro para remover
-    for (int i = 0; i < *quantidadeTotal; i++) 
+    for (int i = 0; i < *QuantidadeLivros; i++) 
     {
         if ((strcmp(tipoBusca, "titulo") == 0 && strcasecmp(livros[i].titulo, parametro) == 0) ||
             (strcmp(tipoBusca, "isbn") == 0 && strcasecmp(livros[i].isbn, parametro) == 0)) 
@@ -77,12 +86,12 @@ void removerLivro(struct Livro livros[], int *quantidadeTotal, char parametro[],
             printf("\n\nRemovendo livro '%s' do sistema\n...\n...\n...\nLivro removido com sucesso.\n", livros[i].titulo);
 
             // Desloca os livros subsequentes para preencher o espaço do livro removido
-            for (int j = i; j < *quantidadeTotal - 1; j++) 
+            for (int j = i; j < *QuantidadeLivros - 1; j++) 
             {
                 livros[j] = livros[j + 1];
             }
 
-            (*quantidadeTotal)--; // Diminui o contador total de livros
+            (*QuantidadeLivros)--; // Diminui o contador total de livros
             encontrado = 1;
             break;
         }
@@ -101,16 +110,16 @@ void removerLivro(struct Livro livros[], int *quantidadeTotal, char parametro[],
         return; // Encerra a função se não conseguir abrir o arquivo
     }
 
-    fwrite(livros, sizeof(struct Livro), *quantidadeTotal, arquivo); // Escreve a lista de livros no arquivo
+    fwrite(livros, sizeof(struct Livro), *QuantidadeLivros, arquivo); // Escreve a lista de livros no arquivo
 
     fclose(arquivo); // Fecha o arquivo após a escrita
 }
 
-void disponibilidade(struct Livro livros[], int quantidadeTotal, char parametro[], char tipoBusca[]) //função de quantidade de exemplares de um livro no sistema
+void disponibilidade(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) //função de quantidade de exemplares de um livro no sistema
 {
     int encontrado = 0; //já é atribuído o valor de 0 como se o livro não existisse no sistema
 
-    for (int i = 0; i < quantidadeTotal; i++) //a repetição passa de livro por livro cadastrado
+    for (int i = 0; i < QuantidadeLivros; i++) //a repetição passa de livro por livro cadastrado
     {
         if ((strcmp(tipoBusca, "titulo") == 0 && strcasecmp(livros[i].titulo, parametro) == 0) ||
             (strcmp(tipoBusca, "isbn") == 0 && strcasecmp(livros[i].isbn, parametro) == 0)) //a condição verifica se o parametro e o tipo de busca são iguais
@@ -129,11 +138,11 @@ void disponibilidade(struct Livro livros[], int quantidadeTotal, char parametro[
     }
 }
 
-void reabastecer(struct Livro livros[], int quantidadeTotal, char parametro[], char tipoBusca[]) //função de reabastecer exemplares de livros no sistema
+void reabastecer(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) //função de reabastecer exemplares de livros no sistema
 {
     int encontrado = 0; //já é atribuído o valor de 0 como se o livro não existisse no sistema
 
-    for (int i = 0; i < quantidadeTotal; i++) //a repetição passa de livro por livro cadastrado
+    for (int i = 0; i < QuantidadeLivros; i++) //a repetição passa de livro por livro cadastrado
     {
         if ((strcmp(tipoBusca, "titulo") == 0 && strcasecmp(livros[i].titulo, parametro) == 0) ||
             (strcmp(tipoBusca, "isbn") == 0 && strcasecmp(livros[i].isbn, parametro) == 0)) //a condição verifica se o parametro e o tipo de busca são iguais
@@ -156,11 +165,11 @@ void reabastecer(struct Livro livros[], int quantidadeTotal, char parametro[], c
     }
 }
 
-void venda(struct Livro livros[], int quantidadeTotal, char parametro[], char tipoBusca[]) //função de registrar venda no sistema e atualizar estoque
+void venda(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) //função de registrar venda no sistema e atualizar estoque
 {
     int encontrado = 0; //já é atribuído o valor de 0 como se o livro não existisse no sistema
 
-    for (int i = 0; i < quantidadeTotal; i++) //a repetição passa de livro por livro cadastrado
+    for (int i = 0; i < QuantidadeLivros; i++) //a repetição passa de livro por livro cadastrado
     {
         if ((strcmp(tipoBusca, "titulo") == 0 && strcasecmp(livros[i].titulo, parametro) == 0) ||
             (strcmp(tipoBusca, "isbn") == 0 && strcasecmp(livros[i].isbn, parametro) == 0)) //a condição verifica se o parametro e o tipo de busca são iguais
@@ -183,7 +192,7 @@ void venda(struct Livro livros[], int quantidadeTotal, char parametro[], char ti
     }
 }
 
-float receita(struct Livro livros[], int quantidadeTotal) 
+float receita(struct Livro livros[], int QuantidadeLivros) 
 {
     int op;
     float receitaTotal = 0;
@@ -209,7 +218,7 @@ float receita(struct Livro livros[], int quantidadeTotal)
         printf("Escreva o %s: ", tipoBusca);
         scanf(" %[^\n]", parametro); //define qual parametro o usuario deseja(título do livro em questão ou seu isbn)
 
-        for (int i = 0; i < quantidadeTotal; i++) 
+        for (int i = 0; i < QuantidadeLivros; i++) 
         {
             if ((strcmp(tipoBusca, "titulo") == 0 && strcasecmp(livros[i].titulo, parametro) == 0) ||
                 (strcmp(tipoBusca, "isbn") == 0 && strcasecmp(livros[i].isbn, parametro) == 0)) //compara o que o usuário digitou no sistema com oque está armazenado
@@ -262,7 +271,7 @@ float receita(struct Livro livros[], int quantidadeTotal)
 
             encontrado = 0;
 
-            for (int i = 0; i < quantidadeTotal; i++) 
+            for (int i = 0; i < QuantidadeLivros; i++) 
             {
                 if ((strcasecmp(livros[i].titulo, parametro) == 0) ||
                     (strcasecmp(livros[i].isbn, parametro) == 0)) 
@@ -306,14 +315,14 @@ float receita(struct Livro livros[], int quantidadeTotal)
     return receitaTotal;
 }
 
-void listarLivros(struct Livro livros[], int quantidadeTotal, char parametro[], char tipoBusca[]) //função de listar livro por autor ou gênero
+void listarLivros(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) //função de listar livro por autor ou gênero
 {
     int encontrado = 0; //já é atribuído o valor de 0 como se o livro não existisse no sistema
     int numero = 1;
 
     printf("Livros de %s...\n", parametro);
 
-    for (int i = 0; i < quantidadeTotal; i++) //a repetição passa de livro por livro cadastrado
+    for (int i = 0; i < QuantidadeLivros; i++) //a repetição passa de livro por livro cadastrado
     {
         if ((strcmp(tipoBusca, "genero") == 0 && strcasecmp(livros[i].genero, parametro) == 0) ||
             (strcmp(tipoBusca, "gênero") == 0 && strcasecmp(livros[i].genero, parametro) == 0) ||
@@ -332,7 +341,7 @@ void listarLivros(struct Livro livros[], int quantidadeTotal, char parametro[], 
     }
 }
 
-void cadastrarLivro(struct Livro livros[], int *quantidadeTotal) // Função para cadastrar um novo livro
+void cadastrarLivro(struct Livro livros[], int *QuantidadeLivros) // Função para cadastrar um novo livro
 {
     struct Livro novoLivro;  // Mudança em "struct Livro" para adicionar o novo livro
 
@@ -360,17 +369,17 @@ void cadastrarLivro(struct Livro livros[], int *quantidadeTotal) // Função par
 
     getchar(); // Consumir o caractere de nova linha residual
 
-    livros[*quantidadeTotal] = novoLivro; //cadastra os novos dados do livro cadastrado no vetor Livros
-    (*quantidadeTotal)++; //incrementa a quantidade total de livros
+    livros[*QuantidadeLivros] = novoLivro; //cadastra os novos dados do livro cadastrado no vetor Livros
+    (*QuantidadeLivros)++; //incrementa a quantidade total de livros
 
     printf("Livro cadastrado com sucesso!\n");
 }
 
-void atualizarLivro(struct Livro livros[], int quantidadeTotal, char parametro[], char tipoBusca[]) // Função para atualizar as informações de um livro
+void atualizarLivro(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) // Função para atualizar as informações de um livro
 {
     int encontrado = 0;
 
-    for (int i = 0; i < quantidadeTotal; i++) {
+    for (int i = 0; i < QuantidadeLivros; i++) {
         if ((strcmp(tipoBusca, "titulo") == 0 && strcmp(livros[i].titulo, parametro) == 0) ||
             (strcmp(tipoBusca, "isbn") == 0 && strcmp(livros[i].isbn, parametro) == 0)) {
             encontrado = 1;
@@ -428,52 +437,52 @@ void atualizarLivro(struct Livro livros[], int quantidadeTotal, char parametro[]
     }
 }
 
-// Função para ler livros do arquivo
-void lerLivrosDoArquivo(struct Livro livros[], int *quantidadeTotal) 
+void lerLivrosDoArquivo(struct Livro livros[], int *QuantidadeLivros) // Função para ler livros do arquivo
 {
-    FILE *file = fopen("C:/Users/Lenovo/OneDrive/Documentos/UFC/FUP 2024/AV03/livros.txt", "r");
+    FILE *file = fopen("livros.txt", "r");
 
     if (file == NULL) 
     {
         puts("Erro ao abrir o arquivo livros.txt para leitura.");
-        *quantidadeTotal = 0;
+        *QuantidadeLivros = 0;
         return;
     }
 
     char linha[256]; // Buffer para armazenar cada linha do arquivo
-    *quantidadeTotal = 0;
+    *QuantidadeLivros = 0;
 
     while (fgets(linha, sizeof(linha), file)) 
     {
-    // Remova o caractere de nova linha, se presente
-    linha[strcspn(linha, "\n")] = '\0';
+        linha[strcspn(linha, "\n")] = '\0';
 
-    if (sscanf(linha, "%49[^;];%49[^;];%29[^;];%19[^;];%d;%f",
-               livros[*quantidadeTotal].titulo,
-               livros[*quantidadeTotal].autor,
-               livros[*quantidadeTotal].genero,
-               livros[*quantidadeTotal].isbn,
-               &livros[*quantidadeTotal].quantidade,
-               &livros[*quantidadeTotal].preco) == 6) 
-        {
-            (*quantidadeTotal)++;
-        } 
+        if (sscanf(linha, "%49[^;];%49[^;];%29[^;];%19[^;];%d;%f",
+                livros[*QuantidadeLivros].titulo,
+                livros[*QuantidadeLivros].autor,
+                livros[*QuantidadeLivros].genero,
+                livros[*QuantidadeLivros].isbn,
+                &livros[*QuantidadeLivros].quantidade,
+                &livros[*QuantidadeLivros].preco) == 6) 
+            {
+                (*QuantidadeLivros)++;
+            } 
 
-    else 
-        {
-            printf("Erro ao processar a linha: %s\n", linha);
-        }
+        else 
+            {
+                printf("Erro ao processar a linha: %s\n", linha);
+            }
     }
 }
 
-// Função para mostrar os livros
-void mostrarLivros(struct Livro livros[], int quantidadeTotal) {
-    if (quantidadeTotal == 0) {
+void mostrarLivros(struct Livro livros[], int QuantidadeLivros) // Função para mostrar os livros
+{
+    if (QuantidadeLivros == 0) 
+    {
         printf("Nenhum livro disponivel para exibicao.\n");
         return;
     }
 
-    for (int i = 0; i < quantidadeTotal; i++) {
+    for (int i = 0; i < QuantidadeLivros; i++) 
+    {
         printf("Livro %d:\n", i + 1);
         printf("  Titulo: %s\n", livros[i].titulo);
         printf("  Autor: %s\n", livros[i].autor);
@@ -484,59 +493,72 @@ void mostrarLivros(struct Livro livros[], int quantidadeTotal) {
     }
 }
 
-int main() 
+void lerFuncionariosDoArquivo(struct Funcionario funcionarios[], int *QuantidadeFuncionarios) 
 {
-    /*
-    struct Livro livros[] = {
-    {"O Senhor dos Aneis", "J.R.R. Tolkien", "Fantasia", "1234567890123", 10, 59.90},
-    {"1984", "George Orwell", "Distopia", "9876543210987", 8, 45.50},
-    {"A Revolucao dos Bichos", "George Orwell", "Sátira", "1122334455667", 5, 39.90},
-    {"Dom Quixote", "Miguel de Cervantes", "Clássico", "1234432112344", 7, 49.90},
-    {"O Pequeno Principe", "Antoine de Saint-Exupéry", "Fábula", "9988776655443", 15, 29.90},
-    {"Crime e Castigo", "Fiódor Dostoiévski", "Romance", "4455667788991", 6, 54.80},
-    {"O Hobbit", "J.R.R. Tolkien", "Fantasia", "2233445566778", 12, 44.90},
-    {"Orgulho e Preconceito", "Jane Austen", "Romance", "3344556677889", 9, 38.50},
-    {"Cem Anos de Solidao", "Gabriel García Márquez", "Realismo Mágico", "5566778899001", 8, 48.90},
-    {"Moby Dick", "Herman Melville", "Aventura", "6677889900112", 4, 52.30},
-    {"O Nome da Rosa", "Umberto Eco", "Mistério", "7788990011223", 10, 46.50},
-    {"As Cronicas de Narnia", "C.S. Lewis", "Fantasia", "8899001122334", 12, 49.90},
-    {"O Apanhador no Campo de Centeio", "J.D. Salinger", "Romance", "9900112233445", 6, 42.00},
-    {"Guerra e Paz", "Liev Tolstói", "Romance", "1011121314156", 5, 65.90},
-    {"O Conde de Monte Cristo", "Alexandre Dumas", "Aventura", "1213141516178", 7, 57.20},
-    {"A Iliada", "Homero", "Épico", "1314151617189", 4, 60.00},
-    {"Ulisses", "James Joyce", "Modernismo", "1415161718190", 3, 55.40},
-    {"Alice no Pais das Maravilhas", "Lewis Carroll", "Fantasia", "1516171819201", 8, 32.50},
-    {"Dracula", "Bram Stoker", "Terror", "1617181920212", 5, 50.60},
-    {"Os Miseraveis", "Victor Hugo", "Drama", "1718192021223", 6, 58.80},
-    {"Frankenstein", "Mary Shelley", "Ficção Científica", "1819202122234", 7, 37.90},
-    {"O Grande Gatsby", "F. Scott Fitzgerald", "Romance", "1920212223245", 9, 41.20},
-    {"A Divina Comedia", "Dante Alighieri", "Épico", "2021222324256", 3, 64.70},
-    {"O Morro dos Ventos Uivantes", "Emily Brontë", "Romance", "2122232425267", 5, 45.80},
-    {"A Metamorfose", "Franz Kafka", "Ficção", "2223242526278", 8, 36.40},
-    {"Os Tres Mosqueteiros", "Alexandre Dumas", "Aventura", "2324252627289", 7, 44.50},
-    {"O Retrato de Dorian Gray", "Oscar Wilde", "Ficção", "2425262728290", 6, 39.80},
-    {"O Sol e Para Todos", "Harper Lee", "Romance", "2526272829301", 10, 46.70},
-    {"A Montanha Magica", "Thomas Mann", "Modernismo", "2627282930312", 4, 60.90},
-    {"O Som e a Furia", "William Faulkner", "Modernismo", "2728293031323", 3, 49.90},
-    {"As Vinhas da Ira", "John Steinbeck", "Drama", "2829303132334", 5, 43.30}
-    }; //livros cadastrados no sistema
-    */
+    FILE *file = fopen("funcionarios.txt", "r");
 
-    struct Livro livros[100]; // Array para armazenar até 100 livros
-    int quantidadeTotal = 0;
+    if (file == NULL) 
+    {
+        puts("Erro ao abrir o arquivo funcionarios.txt para leitura.");
+        *QuantidadeFuncionarios = 0;
+        return;
+    }
 
-    // Chama a função para ler os livros do arquivo
-    lerLivrosDoArquivo( livros, &quantidadeTotal);
+    char linha[256]; // Buffer para armazenar cada linha do arquivo
+    *QuantidadeFuncionarios = 0;
 
-    // Chama a função para mostrar os livros
-    mostrarLivros(livros, quantidadeTotal);
+    while (fgets(linha, sizeof(linha), file)) 
+    {
+        linha[strcspn(linha, "\n")] = '\0';
 
-    return 0;
+        if (sscanf(linha, "%d;%50[^;];%50[^;];%f;%d",
+                   &funcionarios[*QuantidadeFuncionarios].id,
+                   funcionarios[*QuantidadeFuncionarios].nome,
+                   funcionarios[*QuantidadeFuncionarios].cargo,
+                   &funcionarios[*QuantidadeFuncionarios].salario,
+                   &funcionarios[*QuantidadeFuncionarios].idade) == 5) 
+        {
+            (*QuantidadeFuncionarios)++;
+        } 
+
+        else 
+        {
+            printf("Erro ao processar a linha: %s\n", linha);
+        }
+    }
+
+    fclose(file);
 }
 
-    /*
+void mostrarFuncionarios(struct Funcionario funcionarios[], int QuantidadeFuncionarios) 
+{
+    if (QuantidadeFuncionarios == 0) 
+    {
+        printf("Nenhum funcionário cadastrado.\n");
+        return;
+    }
 
-    int quantidadeTotal = carregar_livros_txt(livros);
+    for (int i = 0; i < QuantidadeFuncionarios; i++)
+    {
+        printf("ID: %d\n", funcionarios[i].id);
+        printf("Nome: %s\n", funcionarios[i].nome);
+        printf("Cargo: %s\n", funcionarios[i].cargo);
+        printf("Salario: R$%.2f\n", funcionarios[i].salario);
+        printf("Idade: %d anos\n", funcionarios[i].idade);
+        printf("---------------------------\n");
+    }
+}
+
+int main() 
+{
+    struct Livro livros[100];
+    struct Funcionario funcionarios[100];
+    int QuantidadeLivros = 0;
+    int QuantidadeFuncionarios = 0;
+
+    lerLivrosDoArquivo( livros, &QuantidadeLivros); // Chama a função para ler os livros do arquivo
+    lerFuncionariosDoArquivo( funcionarios, &QuantidadeFuncionarios); // Chama a função para ler os funcionários do arquivo
+
     int senha = 123, senhaUsuario;
     char repetir;
 
@@ -606,7 +628,7 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário 
 
-                    pesquisarLivro(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
+                    pesquisarLivro(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
                 }
 
                 else if(opp == 2) //opção de remover livro do sistema
@@ -617,7 +639,7 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário digita o titulo ou isbn do livro
 
-                    removerLivro(livros, &quantidadeTotal, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
+                    removerLivro(livros, &QuantidadeLivros, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
                 }
 
                 else if(opp == 3) //opção de quantidade de exemplares de um livro a loja possui
@@ -628,7 +650,7 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário digita o titulo ou isbn do livro
 
-                    disponibilidade(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de disponibilidade de livro no sistema
+                    disponibilidade(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de disponibilidade de livro no sistema
                 }
 
                 else if(opp == 4) //opção de registro de venda
@@ -639,7 +661,7 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário digita o titulo ou isbn do livro
 
-                    venda(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de resgistrar venda
+                    venda(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de resgistrar venda
                 }
 
                 else if(opp == 5)
@@ -650,7 +672,7 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário digita o titulo ou isbn do livro
 
-                    listarLivros(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de listar livros por genero ou autor
+                    listarLivros(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de listar livros por genero ou autor
                 }
 
                 printf("\nDeseja algo mais?(s/n) ");
@@ -667,11 +689,12 @@ int main()
             do
             {
                 int opp;
-                printf("\n\n\tMENU\n\n[1] - Calcular Receita\n[2] - Cadastrar novo livro\n[3] - Atualizar informacao de livro");
+                printf("\n\n\tMENU\n\n[1] - Calcular Receita\n[2] - Cadastrar novo livro\n[3] - Atualizar informacao de livro\n");
+                printf("[4] - Mostrar Todos os Livros no Sistema\n[5] - Mostrar todos os Funcinarios no Sistema");
                 printf("\nDigite: "); //usuário escolhe oque ele quer fazer no sistema
                 scanf("%d", &opp);
 
-                while(opp>3 || opp<1)
+                while(opp>5 || opp<1)
                 {
                     printf("\nOpção invalida, tente novamente: ");
                     scanf("%d", &opp);
@@ -679,22 +702,22 @@ int main()
 
                 if(opp == 1) //opção de calcular receita 
                 {
-                    float total = receita(livros, quantidadeTotal); //armazena o retorno da função 'receita' em 'total'
+                    float total = receita(livros, QuantidadeLivros); //armazena o retorno da função 'receita' em 'total'
                     printf("A livraria teve uma receita de R$ %.2f no período escolhido\n", total);
                 }
 
                 else if(opp == 2) //opção de cadastrar novo livro
                 {
                     getchar(); // Limpa o buffer de entrada
-                    cadastrarLivro(livros, &quantidadeTotal); // chama a função para cadastrar um novo livro
+                    cadastrarLivro(livros, &QuantidadeLivros); // chama a função para cadastrar um novo livro
 
                     // Para verificar se o livro foi cadastrado corretamente
-                    printf("\nTitulo cadastrado: %s\n", livros[quantidadeTotal - 1].titulo);
-                    printf("Autor cadastrado: %s\n", livros[quantidadeTotal - 1].autor);
-                    printf("ISBN cadastrado: %s\n", livros[quantidadeTotal - 1].isbn);
-                    printf("Genero cadastrado: %s\n", livros[quantidadeTotal - 1].genero);
-                    printf("Preco cadastrado: %.2f\n", livros[quantidadeTotal - 1].preco);
-                    printf("Quantidade cadastrada: %d\n", livros[quantidadeTotal - 1].quantidade);
+                    printf("\nTitulo cadastrado: %s\n", livros[QuantidadeLivros - 1].titulo);
+                    printf("Autor cadastrado: %s\n", livros[QuantidadeLivros - 1].autor);
+                    printf("ISBN cadastrado: %s\n", livros[QuantidadeLivros - 1].isbn);
+                    printf("Genero cadastrado: %s\n", livros[QuantidadeLivros - 1].genero);
+                    printf("Preco cadastrado: %.2f\n", livros[QuantidadeLivros - 1].preco);
+                    printf("Quantidade cadastrada: %d\n", livros[QuantidadeLivros - 1].quantidade);
                 }
 
                 else if(opp == 3) //opção de atualizar certa informação de um livro
@@ -705,7 +728,17 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário digita o titulo ou isbn do livro
 
-                    atualizarLivro(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de listar livros por genero ou autor
+                    atualizarLivro(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de listar livros por genero ou autor
+                }
+
+                else if(opp == 4)
+                {
+                    mostrarLivros(livros, QuantidadeLivros);
+                }
+
+                else if(opp == 5)
+                {
+                    mostrarFuncionarios(funcionarios, QuantidadeFuncionarios);
                 }
 
                 printf("\nDeseja algo mais?(s/n) ");
@@ -739,7 +772,7 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário 
 
-                    pesquisarLivro(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
+                    pesquisarLivro(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
                 }
 
                 if(opp == 2) //opção de reabastecer o estoque
@@ -750,7 +783,7 @@ int main()
                     printf("Escreva o %s: ", tipoBusca);
                     scanf(" %[^\n]", parametro); //usuário 
 
-                    reabastecer(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de reabastecer estoque
+                    reabastecer(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de reabastecer estoque
                 }
 
 
@@ -788,7 +821,7 @@ int main()
                 printf("Escreva o %s: ", tipoBusca);
                 scanf(" %[^\n]", parametro); //usuário digita o titulo ou autor ou genero ou isbn do livro
 
-                pesquisarLivro(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
+                pesquisarLivro(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de pesquisa de livro no sistema
             }
 
             else if(opp == 2)
@@ -799,7 +832,7 @@ int main()
                 printf("Escreva o %s: ", tipoBusca);
                  scanf(" %[^\n]", parametro); //usuário digita o titulo ou isbn do livro
 
-                listarLivros(livros, quantidadeTotal, parametro, tipoBusca); //chama a função de listar livros por genero ou autor
+                listarLivros(livros, QuantidadeLivros, parametro, tipoBusca); //chama a função de listar livros por genero ou autor
             }
 
             printf("\nDeseja algo mais?(s/n) ");
@@ -812,4 +845,3 @@ int main()
 
     return 0;
 }
-*/
