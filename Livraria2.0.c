@@ -20,6 +20,7 @@ struct Funcionario //cria uma struct para armazenar informações dos funcionár
     char cargo[50];
     float salario;
     int idade;
+    int senha;
 };
 
 int carregar_livros_txt(struct Livro livros[]) 
@@ -511,12 +512,13 @@ void lerFuncionariosDoArquivo(struct Funcionario funcionarios[], int *Quantidade
     {
         linha[strcspn(linha, "\n")] = '\0';
 
-        if (sscanf(linha, "%d;%50[^;];%50[^;];%f;%d",
+        if (sscanf(linha, "%d;%50[^;];%50[^;];%f;%d;%d",
                    &funcionarios[*QuantidadeFuncionarios].id,
                    funcionarios[*QuantidadeFuncionarios].nome,
                    funcionarios[*QuantidadeFuncionarios].cargo,
                    &funcionarios[*QuantidadeFuncionarios].salario,
-                   &funcionarios[*QuantidadeFuncionarios].idade) == 5) 
+                   &funcionarios[*QuantidadeFuncionarios].idade,
+                   &funcionarios[*QuantidadeFuncionarios].senha) == 6) 
         {
             (*QuantidadeFuncionarios)++;
         } 
@@ -549,6 +551,28 @@ void mostrarFuncionarios(struct Funcionario funcionarios[], int QuantidadeFuncio
     }
 }
 
+void senha(int ID, struct Funcionario funcionarios[], int QuantidadeFuncionarios) 
+{
+    int senhaID;
+
+    for (int i = 0; i < QuantidadeFuncionarios; i++)
+    {
+        if(funcionarios[i].id ==ID)
+        {
+            printf("Digite sua senha: ");
+            scanf("%d", &senhaID);
+
+            while(funcionarios[i].senha != senhaID)
+            {
+                printf("Senha incorreta, digite novamente: ");
+                scanf("%d", &senhaID);
+            }
+
+            return;
+        }
+    }
+}
+
 int main() 
 {
     struct Livro livros[100];
@@ -559,17 +583,14 @@ int main()
     lerLivrosDoArquivo( livros, &QuantidadeLivros); // Chama a função para ler os livros do arquivo
     lerFuncionariosDoArquivo( funcionarios, &QuantidadeFuncionarios); // Chama a função para ler os funcionários do arquivo
 
-    int senha = 123, senhaUsuario;
-    char repetir;
-
-    char nome[100]; 
+    char nome[100], repetir; 
 
     printf("\tLIVRARIA CEFA'S\n\n");
     printf("Ola, qual eh o seu nome? ");
     scanf(" %[^\n]", nome);
     printf("\nOla, %s\n", nome);
 
-    int op;
+    int op, ID;
 
     printf("\nAntes de prosseguirmos, precisamos saber se voce eh funcionario ou cliente...");
     printf("\n[1] - Funcionario\n[2] - Cliente\nDigite a opcao: ");
@@ -583,14 +604,10 @@ int main()
 
     if(op == 1) 
     {
-        printf("\nDigite a senha do sistema: ");
-        scanf("%d", &senhaUsuario);
+        printf("\nDigite seu ID de funcionario: ");
+        scanf("%d", &ID);
 
-        while (senha != senhaUsuario)
-        {
-            printf("\nSenha incorreta, tente novamente: ");
-            scanf("%d", &senhaUsuario);
-        }
+        senha(ID, funcionarios, &QuantidadeFuncionarios);
 
         system("cls");
         
