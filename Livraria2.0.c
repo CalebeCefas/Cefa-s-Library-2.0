@@ -472,6 +472,7 @@ void lerLivrosDoArquivo(struct Livro livros[], int *QuantidadeLivros) // Funçã
                 printf("Erro ao processar a linha: %s\n", linha);
             }
     }
+    fclose(file);
 }
 
 void mostrarLivros(struct Livro livros[], int QuantidadeLivros) // Função para mostrar os livros
@@ -547,7 +548,7 @@ void mostrarFuncionarios(struct Funcionario funcionarios[], int QuantidadeFuncio
         printf("Cargo: %s\n", funcionarios[i].cargo);
         printf("Salario: R$%.2f\n", funcionarios[i].salario);
         printf("Idade: %d anos\n", funcionarios[i].idade);
-        printf("---------------------------\n");
+        printf("\n");
     }
 }
 
