@@ -2,16 +2,16 @@ O Senhor dos Aneis;J.R.R. Tolkien;Fantasia;1234567890123;10;59.90
 1984;George Orwell;Distopia;9876543210987;8;45.50
 A Revolucao dos Bichos;George Orwell;Satira;1122334455667;5;39.90
 Dom Quixote;Miguel de Cervantes;Classico;1234432112344;7;49.90
-O Pequeno Principe;Antoine de Saint-Exupéry;Fabula;9988776655443;15;29.90
-Crime e Castigo;Fiódor Dostoiévski;Romance;4455667788991;6;54.80
+O Pequeno Principe;Antoine de Saint-Exupery;Fabula;9988776655443;15;29.90
+Crime e Castigo;Fiodor Dostoievski;Romance;4455667788991;6;54.80
 O Hobbit;J.R.R. Tolkien;Fantasia;2233445566778;12;44.90
 Orgulho e Preconceito;Jane Austen;Romance;3344556677889;9;38.50
 Cem Anos de Solidao;Gabriel García Marquez;Realismo Magico;5566778899001;8;48.90
 Moby Dick;Herman Melville;Aventura;6677889900112;4;52.30
-O Nome da Rosa;Umberto Eco;Mistério;7788990011223;10;46.50
+O Nome da Rosa;Umberto Eco;Misterio;7788990011223;10;46.50
 As Cronicas de Narnia;C.S. Lewis;Fantasia;8899001122334;12;49.90
 O Apanhador no Campo de Centeio;J.D. Salinger;Romance;9900112233445;6;42.00
-Guerra e Paz;Liev Tolstói;Romance;1011121314156;5;65.90
+Guerra e Paz;Liev Tolstoi;Romance;1011121314156;5;65.90
 O Conde de Monte Cristo;Alexandre Dumas;Aventura;1213141516178;7;57.20
 A Iliada;Homero;Epico;1314151617189;4;60.00
 Ulisses;James Joyce;Modernismo;1415161718190;3;55.40
