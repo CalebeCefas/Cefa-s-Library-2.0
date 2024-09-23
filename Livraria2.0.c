@@ -23,26 +23,6 @@ struct Funcionario //cria uma struct para armazenar informações dos funcionár
     int senha;
 };
 
-int carregar_livros_txt(struct Livro livros[]) 
-{
-    FILE *arquivo = fopen("livros.txt", "r");
-    if (arquivo == NULL) 
-        {
-            printf("Erro ao abrir o arquivo para leitura.\n");
-            return 0;
-        }
-    int QuantidadeLivros = 0;
-
-    while (fscanf(arquivo, "%99[^;];%99[^;];%49[^;];%19[^;];%d;%f\n",
-            livros[QuantidadeLivros].titulo, livros[QuantidadeLivros].autor, livros[QuantidadeLivros].genero,
-            livros[QuantidadeLivros].isbn, &livros[QuantidadeLivros].quantidade, &livros[QuantidadeLivros].preco) != EOF) 
-        {
-            QuantidadeLivros++;
-        }
-    fclose(arquivo);
-    return QuantidadeLivros;
-}
-
 void pesquisarLivro(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) //função de pesquisa de livro no sistema
 {
     int encontrado = 0; //já é atribuído o valor de 0 como se o livro não existisse no sistema
@@ -70,7 +50,7 @@ void pesquisarLivro(struct Livro livros[], int QuantidadeLivros, char parametro[
 
     if (!encontrado)  // Se Encontrado=0, quer dizer que o sistema não encontrou o livro
     { 
-        printf("\nLivro não encontrado.\n");
+        printf("\nLivro nao encontrado.\n");
     }
 }
 
@@ -100,20 +80,8 @@ void removerLivro(struct Livro livros[], int *QuantidadeLivros, char parametro[]
 
     if (!encontrado) // Se Encontrado=0, quer dizer que o sistema não encontrou o livro
     { 
-        printf("\nLivro não encontrado.\n");
+        printf("\nLivro nao encontrado.\n");
     }
-
-    // Atualiza o arquivo com a lista de livros modificada
-    FILE *arquivo = fopen("livros.txt", "w"); // Abre o arquivo para escrita binária
-    if (arquivo == NULL) 
-    {
-        printf("Erro ao abrir o arquivo para atualização.\n");
-        return; // Encerra a função se não conseguir abrir o arquivo
-    }
-
-    fwrite(livros, sizeof(struct Livro), *QuantidadeLivros, arquivo); // Escreve a lista de livros no arquivo
-
-    fclose(arquivo); // Fecha o arquivo após a escrita
 }
 
 void disponibilidade(struct Livro livros[], int QuantidadeLivros, char parametro[], char tipoBusca[]) //função de quantidade de exemplares de um livro no sistema
@@ -438,41 +406,42 @@ void atualizarLivro(struct Livro livros[], int QuantidadeLivros, char parametro[
     }
 }
 
-void lerLivrosDoArquivo(struct Livro livros[], int *QuantidadeLivros) // Função para ler livros do arquivo
+int carregar_livros(struct Livro livros[]) 
 {
-    FILE *file = fopen("livros.txt", "r");
-
-    if (file == NULL) 
+    FILE *arquivo = fopen("livros.txt", "r");
+    if (arquivo == NULL) 
     {
-        puts("Erro ao abrir o arquivo livros.txt para leitura.");
-        *QuantidadeLivros = 0;
-        return;
+        printf("Erro ao abrir o arquivo para leitura.\n");
+        return 0;
     }
 
-    char linha[256]; // Buffer para armazenar cada linha do arquivo
-    *QuantidadeLivros = 0;
+    char linha[256];  // Buffer para armazenar cada linha do arquivo
+    int QuantidadeLivros = 0;
 
-    while (fgets(linha, sizeof(linha), file)) 
+    while (fgets(linha, sizeof(linha), arquivo)) 
     {
+        // Remove o caractere de nova linha, se presente
         linha[strcspn(linha, "\n")] = '\0';
 
-        if (sscanf(linha, "%49[^;];%49[^;];%29[^;];%19[^;];%d;%f",
-                livros[*QuantidadeLivros].titulo,
-                livros[*QuantidadeLivros].autor,
-                livros[*QuantidadeLivros].genero,
-                livros[*QuantidadeLivros].isbn,
-                &livros[*QuantidadeLivros].quantidade,
-                &livros[*QuantidadeLivros].preco) == 6) 
-            {
-                (*QuantidadeLivros)++;
-            } 
-
+        // Tenta ler os dados da linha e armazená-los na estrutura
+        if (sscanf(linha, "%99[^;];%99[^;];%49[^;];%19[^;];%d;%f",
+                   livros[QuantidadeLivros].titulo,
+                   livros[QuantidadeLivros].autor,
+                   livros[QuantidadeLivros].genero,
+                   livros[QuantidadeLivros].isbn,
+                   &livros[QuantidadeLivros].quantidade,
+                   &livros[QuantidadeLivros].preco) == 6) 
+        {
+            QuantidadeLivros++;
+        } 
         else 
-            {
-                printf("Erro ao processar a linha: %s\n", linha);
-            }
+        {
+            printf("Erro ao processar a linha: %s\n", linha);
+        }
     }
-    fclose(file);
+
+    fclose(arquivo);
+    return QuantidadeLivros;  // Retorna o número de livros lidos
 }
 
 void mostrarLivros(struct Livro livros[], int QuantidadeLivros) // Função para mostrar os livros
@@ -565,7 +534,7 @@ void senha(int ID, struct Funcionario funcionarios[], int QuantidadeFuncionarios
 
             while(funcionarios[i].senha != senhaID)
             {
-                printf("Senha incorreta, digite novamente: ");
+                printf("Senha incorreta, tente novamente: ");
                 scanf("%d", &senhaID);
             }
 
@@ -581,8 +550,8 @@ int main()
     int QuantidadeLivros = 0;
     int QuantidadeFuncionarios = 0;
 
-    lerLivrosDoArquivo( livros, &QuantidadeLivros); // Chama a função para ler os livros do arquivo
-    lerFuncionariosDoArquivo( funcionarios, &QuantidadeFuncionarios); // Chama a função para ler os funcionários do arquivo
+    QuantidadeLivros = carregar_livros(livros); // Chama a função para ler os livros do arquivo
+    lerFuncionariosDoArquivo(funcionarios, &QuantidadeFuncionarios); // Chama a função para ler os funcionários do arquivo
 
     char nome[100], repetir; 
 
