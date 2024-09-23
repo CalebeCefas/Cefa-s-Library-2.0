@@ -596,7 +596,7 @@ int main()
             do
             {
                 int opp;
-                printf("\n\n\tMENU\n\n[1] - Pesquisar dados de livro\n[2] - Remover livro do sistema\n[3] - Disponibilidade de exemplar\n");
+                printf("\n\tMENU\n\n[1] - Pesquisar dados de livro\n[2] - Remover livro do sistema\n[3] - Disponibilidade de exemplar\n");
                 printf("[4] - Registro de venda\n[5] - Listar livros por autor ou genero");
                 printf("\nDigite: "); //usuário escolhe oque ele quer fazer no sistema
                 scanf("%d", &opp);
@@ -676,7 +676,7 @@ int main()
             do
             {
                 int opp;
-                printf("\n\n\tMENU\n\n[1] - Calcular Receita\n[2] - Cadastrar novo livro\n[3] - Atualizar informacao de livro\n");
+                printf("\n\tMENU\n\n[1] - Calcular Receita\n[2] - Cadastrar novo livro\n[3] - Atualizar informacao de livro\n");
                 printf("[4] - Mostrar Todos os Livros no Sistema\n[5] - Mostrar todos os Funcinarios no Sistema");
                 printf("\nDigite: "); //usuário escolhe oque ele quer fazer no sistema
                 scanf("%d", &opp);
@@ -741,7 +741,7 @@ int main()
             do
             {
                 int opp;
-                printf("\n\n\tMENU\n\n[1] - Pesquisar dados de livro\n[2] - Reabastecer estoque");
+                printf("\n\tMENU\n\n[1] - Pesquisar dados de livro\n[2] - Reabastecer estoque");
                 printf("\nDigite: "); //usuário escolhe oque ele quer fazer no sistema
                 scanf("%d", &opp);
 
@@ -790,7 +790,7 @@ int main()
         {
             int opp;
             printf("\nQuerido cliente, o que deseja fazer?");
-            printf("\n\n\tMENU\n\n[1] - Pesquisar dados de livro\n[2] - Listar livros por autor ou genero");
+            printf("\n\tMENU\n\n[1] - Pesquisar dados de livro\n[2] - Listar livros por autor ou genero");
             printf("\nDigite: ");
             scanf("%d", &opp); //usuário escolhe oque ele quer fazer no sistema
 
@@ -828,7 +828,7 @@ int main()
             system("cls");
 
         }while (repetir == 's');
-    } 
+    }
 
     return 0;
 }
