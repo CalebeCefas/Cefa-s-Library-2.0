@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>  // Para usar strcasecmp
+#include <ctype.h>
 
 struct Livro //cria uma struct para armazenar informações de livros
 {
@@ -406,7 +406,7 @@ void atualizarLivro(struct Livro livros[], int QuantidadeLivros, char parametro[
     }
 }
 
-int carregar_livros(struct Livro livros[]) 
+int lerLivrosDoArquivo(struct Livro livros[]) 
 {
     FILE *arquivo = fopen("livros.txt", "r");
     if (arquivo == NULL) 
@@ -550,7 +550,7 @@ int main()
     int QuantidadeLivros = 0;
     int QuantidadeFuncionarios = 0;
 
-    QuantidadeLivros = carregar_livros(livros); // Chama a função para ler os livros do arquivo
+    QuantidadeLivros = lerLivrosDoArquivo(livros); // Chama a função para ler os livros do arquivo
     lerFuncionariosDoArquivo(funcionarios, &QuantidadeFuncionarios); // Chama a função para ler os funcionários do arquivo
 
     char nome[100], repetir; 

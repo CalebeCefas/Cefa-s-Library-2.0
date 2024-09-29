@@ -29,3 +29,4 @@ O Sol e Para Todos;Harper Lee;Romance;2526272829301;10;46.70
 A Montanha Magica;Thomas Mann;Modernismo;2627282930312;4;60.90
 O Som e a Furia;William Faulkner;Modernismo;2728293031323;3;49.90
 As Vinhas da Ira;John Steinbeck;Drama;2829303132334;5;43.30
+A Culpa é das Estrelas;John Green;Drama;9780142424179;5;35.90
